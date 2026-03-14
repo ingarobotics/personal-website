@@ -1,0 +1,179 @@
+@font-face {
+  font-family: 'CommitMono';
+  src: url('CommitMonoV143/CommitMono-400-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CommitMono';
+  src: url('CommitMonoV143/CommitMono-400-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'CommitMono';
+  src: url('CommitMonoV143/CommitMono-700-Regular.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CommitMono';
+  src: url('CommitMonoV143/CommitMono-700-Italic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: rgb(170, 170, 170);
+  color: rgb(17, 17, 17);
+  font-family: 'CommitMono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  min-height: 100vh;
+  padding: 48px 32px;
+}
+
+.content {
+  grid-column: 1 / 4;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+nav {
+  display: flex;
+  gap: 24px;
+}
+
+nav a {
+  color: rgb(17, 17, 17);
+  text-decoration: none;
+  font-weight: 400;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+h1 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+p {
+  font-weight: 400;
+}
+
+footer {
+  font-weight: 400;
+  opacity: 0.5;
+}
+
+
+nav a.active {
+  text-decoration: underline;
+}
+
+#edit-toggle {
+  background: none;
+  border: none;
+  font-family: 'CommitMono', monospace;
+  font-size: 14px;
+  color: rgb(17, 17, 17);
+  cursor: pointer;
+  padding: 0;
+  opacity: 0.4;
+}
+
+#edit-toggle:hover {
+  opacity: 1;
+}
+
+.edit-mode #edit-toggle {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.edit-mode [contenteditable="true"] {
+  outline: none;
+  border-bottom: 1px solid rgb(17, 17, 17);
+  padding-bottom: 2px;
+}
+
+/* Writing */
+.post-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.post-list li {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+}
+
+.post-date {
+  opacity: 0.5;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.post-list a {
+  color: rgb(17, 17, 17);
+  text-decoration: none;
+}
+
+.post-list a:hover {
+  text-decoration: underline;
+}
+
+/* Bookshelf */
+.book-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.book-list li {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+}
+
+.book-author {
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.book-title {
+  font-style: italic;
+}
