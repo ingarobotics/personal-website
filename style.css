@@ -458,6 +458,10 @@ a:hover {
     display: block;
   }
 
+  #color-panel {
+    display: none;
+  }
+
   .main-content {
     margin-right: auto;
     padding: 4rem 1rem 1rem 1rem;
