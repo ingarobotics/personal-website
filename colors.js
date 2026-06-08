@@ -13,7 +13,7 @@
 
 // === Build the floating color panel ===
 const COLOR_KEY = 'site:colors';
-const DEFAULTS  = { bg: '#2f5252', text: '#f0cd9a', link: '#cc8b5b', swap: false };
+const DEFAULTS  = { bg: '#2f5270', text: '#f0cd9a', link: '#cc8b5b', swap: false };
 const HEX_RE    = /^#[0-9a-fA-F]{6}$/;
 
 function getColors() {
