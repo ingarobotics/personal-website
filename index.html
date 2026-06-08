@@ -3,33 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Name</title>
+  <title>Inga Zhuravleva</title>
   <link rel="stylesheet" href="style.css">
+  <script src="colors.js"></script>
 </head>
 <body>
-  <div class="grid">
-    <div class="content">
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="writing.html">Writing</a>
-        <a href="bookshelf.html">Bookshelf</a>
-      </nav>
+  <div class="hamburger" id="hamburger-menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 
-      <main>
-        <h1>Lorem Ipsum</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </p>
-        <p>
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-      </main>
+  <div class="main-content">
+    <div class="content-block">
+      <h2 class="name">Inga Zhuravleva</h2>
+      <p>I am based in San Francisco, and I am currently interested in physical-world constraints and manufacturing.</p>
+      <p>In the past, I've built new HCI devices at <a href="https://www.midjourney.com/" target="_blank" rel="noopener noreferrer">Midjourney</a>
+      and engineered machines for cryopreserving organs at <a href="https://www.untillabs.com/" target="_blank" rel="noopener noreferrer">Until Labs</a>.
+      </p>
+      <p>In college, I've researched multimodal invasive BCIs for text, speech,
+        and avatar decoding at UCSF Chang Lab and Berkeley Speech Group.
+        Such neuroprosthesis enabled a pathway to restoring naturalistic communication
+        for people with severe paralysis, and we've published this work in <a href="https://www.nature.com/articles/s41586-023-06443-4" target="_blank" rel="noopener noreferrer">Nature</a>.</p>
+      <p>If you'd like to discuss or are building in the physical world, I'd love to hear from you. Say hi at
+        <a href="mailto:ingarobotics@gmail.com">ingarobotics [at] gmail.com</a> !</p>
+    </div>
 
-      <footer>
-        <p>2026</p>
-      </footer>
+    <div class="social-links">
+      <a href="https://x.com/ingarobotics" target="_blank" rel="noopener noreferrer">X</a>
+      <a href="https://www.linkedin.com/in/inga-zhuravleva/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    </div>
+
+    <hr class="bio-divider">
+
+    <div class="content-block writing-preview">
+      <h3>Writing</h3>
+      <ul class="post-list" id="recent-posts"></ul>
     </div>
   </div>
+
+  <nav id="sidebar">
+    <a href="index.html" class="active">home</a>
+    <a class="disabled">bookshelf</a>
+    <a href="writing.html">writing</a>
+  </nav>
+
+  <script src="posts-data.js"></script>
+  <script>
+    document.getElementById('recent-posts').innerHTML = (window.POSTS || []).slice(0, 3).map(p => `
+      <li class="post-item">
+        <span class="post-date">${p.date}</span>
+        <a href="post.html?slug=${p.slug}">${p.title}</a>
+      </li>
+    `).join('');
+
+    document.getElementById('hamburger-menu').addEventListener('click', function () {
+      document.getElementById('sidebar').classList.toggle('active');
+    });
+  </script>
+  <script src="content.js"></script>
   <script src="editor.js"></script>
 </body>
 </html>

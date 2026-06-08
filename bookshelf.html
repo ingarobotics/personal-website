@@ -3,50 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bookshelf</title>
+  <title>Bookshelf — Inga Zhuravleva</title>
   <link rel="stylesheet" href="style.css">
+  <script src="colors.js"></script>
 </head>
 <body>
-  <div class="grid">
-    <div class="content">
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="writing.html">Writing</a>
-        <a href="bookshelf.html" class="active">Bookshelf</a>
-      </nav>
+  <div class="hamburger" id="hamburger-menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 
-      <main>
-        <h1>Bookshelf</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <ul class="book-list">
-          <li>
-            <span class="book-author">Lorem Ipsum</span>
-            <span class="book-title">Dolor Sit Amet</span>
-          </li>
-          <li>
-            <span class="book-author">Consectetur Adipiscing</span>
-            <span class="book-title">Elit Sed Do Eiusmod</span>
-          </li>
-          <li>
-            <span class="book-author">Tempor Incididunt</span>
-            <span class="book-title">Ut Labore et Dolore</span>
-          </li>
-          <li>
-            <span class="book-author">Magna Aliqua Enim</span>
-            <span class="book-title">Ad Minim Veniam</span>
-          </li>
-          <li>
-            <span class="book-author">Quis Nostrud</span>
-            <span class="book-title">Exercitation Ullamco</span>
-          </li>
-        </ul>
-      </main>
-
-      <footer>
-        <p>2026</p>
-      </footer>
+  <div class="main-content">
+    <div class="content-block">
+      <h2>Bookshelf</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <ul class="book-list">
+        <li>
+          <span class="book-author">Lorem Ipsum</span>
+          <span class="book-title">Dolor Sit Amet</span>
+        </li>
+        <li>
+          <span class="book-author">Consectetur Adipiscing</span>
+          <span class="book-title">Elit Sed Do Eiusmod</span>
+        </li>
+        <li>
+          <span class="book-author">Tempor Incididunt</span>
+          <span class="book-title">Ut Labore et Dolore</span>
+        </li>
+        <li>
+          <span class="book-author">Magna Aliqua Enim</span>
+          <span class="book-title">Ad Minim Veniam</span>
+        </li>
+        <li>
+          <span class="book-author">Quis Nostrud</span>
+          <span class="book-title">Exercitation Ullamco</span>
+        </li>
+      </ul>
     </div>
   </div>
+
+  <nav id="sidebar">
+    <a href="index.html">home</a>
+    <a class="disabled">bookshelf</a>
+    <a href="writing.html">writing</a>
+  </nav>
+
+  <script>
+    document.getElementById('hamburger-menu').addEventListener('click', function () {
+      document.getElementById('sidebar').classList.toggle('active');
+    });
+  </script>
+  <script src="content.js"></script>
   <script src="editor.js"></script>
 </body>
 </html>

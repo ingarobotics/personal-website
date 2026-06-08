@@ -1,0 +1,85 @@
+# Project notes for Claude
+
+Personal static website. Hand-rolled HTML/CSS/JS, no framework, no Node toolchain. Python stdlib for local dev tooling.
+
+## Pages
+
+- `index.html` — home (bio + social links + recent posts)
+- `about.html`
+- `writing.html` — list of posts, populated from `posts-data.js`
+- `bookshelf.html`
+- `post.html` — generic post renderer; reads `?slug=<name>`, fetches markdown from `window.POSTS`, renders client-side with marked.js
+- All pages share `style.css`, the right-side `<nav id="sidebar">`, a mobile hamburger toggle, and the editor/colors tooling
+
+## Fonts (Google Fonts, one `@import`)
+
+- Body / nav / UI: **Geist**
+- Headings (h2/h3): **Playfair Display**
+- Home-page name only (`.content-block .name`): **Texturina**
+
+## Local authoring tools (NOT for production)
+
+These exist only to make iterating fast locally. Strip or bake before deploy.
+
+- **`editor.js`** — adds an "edit" button to the nav; toggles `contentEditable` on `.content-block h2/p/li:not(.post-item)`. On "done", POSTs to `/save`.
+- **`content.js`** — `window.CONTENT = { "<page.html>": { "<index>": "<innerHTML>", ... } }`. Applied as an overlay at load by `editor.js`. Source of truth for unbaked edits.
+- **`colors.js`** — floating ◐ panel for live theming (bg / text / link hex inputs + bg↔text swap). Persists to `localStorage` (no file).
+- **`serve.py`** — dev server. Adds `Cache-Control: no-store` (avoids stale-JS confusion that bit us repeatedly), allows port reuse, falls back to 8001+ if 8000 busy, exposes `POST /save` that atomically rewrites `content.js`.
+
+## Posts pipeline
+
+1. Write markdown in `posts/<slug>.md` with frontmatter (`title`, `date`)
+2. `python3 build.py` → regenerates `posts-data.js` (`window.POSTS = [...]`)
+3. Pages load `posts-data.js` via `<script>` (works on `file://` and `http://`)
+4. `post.html?slug=<slug>` renders the markdown client-side with marked.js from CDN
+
+## Daily workflow
+
+```
+python3 serve.py        # http://localhost:8000
+# edit content, write posts
+python3 build.py        # after adding/editing posts
+```
+
+## Deploy workflow
+
+```
+python3 bake.py             # writes content.js edits permanently into HTML
+python3 bake.py --dry-run   # preview first
+git diff                    # review
+```
+
+`bake.py` uses the *same* element-matching logic as `editor.js` (`.content-block h2/p/li:not(.post-item)` in document order, indices line up with `content.js` keys), and splices inner HTML at byte offsets so it doesn't perturb anything else.
+
+**Ship these files:** all `.html`, `style.css`, `posts-data.js`, `posts/` (markdown sources — only needed if you keep client-side post rendering; see SEO plan below for an alternative).
+
+**Don't ship:** `editor.js`, `content.js`, `serve.py`, `build.py`, `bake.py`. `colors.js` is optional (debatable whether visitors should have the theme picker).
+
+## Conventions / things to remember
+
+- Editor matches elements by **position**, not id. If you reorder/add/remove h2/p/li inside a `.content-block`, existing entries in `content.js` may map to the wrong element — re-edit or clear `content.js`.
+- `.post-item` lis are excluded from editables (they're dynamically injected from `posts-data.js`; not user content).
+- Page key in `content.js` is just the filename (`bookshelf.html`), so edits are portable between `file://` and `localhost`.
+- `serve.py` sends no-store cache headers; always restart it after editing tooling and hard-refresh if anything seems stale.
+- If you hit "Address already in use", a previous `serve.py` is still bound — `lsof -ti tcp:8000 | xargs kill`.
+
+## Future work: SEO for blog posts
+
+Currently posts render client-side, so crawlers (and link-preview bots like X, LinkedIn, Mastodon) see an empty "Loading…" template. Fix when ready by upgrading `build.py`:
+
+1. **Render each `.md` to standalone static HTML** at `posts/<slug>.html` (clean URL, no query param). Each file has:
+   - Real rendered post body (not Loading placeholder)
+   - `<title>` from frontmatter
+   - `<meta name="description">` from first paragraph or frontmatter `description`
+   - Open Graph + Twitter card meta (`og:title`, `og:description`, `og:type=article`, `og:image` if provided)
+   - JSON-LD `BlogPosting` schema
+   - Same site chrome (`<nav>`, color panel, fonts)
+2. **Generate `sitemap.xml`** listing all pages and posts.
+3. **Generate `feed.xml`** (RSS or Atom) from `posts/*.md`.
+4. **Add `robots.txt`** allowing all + pointing to sitemap.
+5. **Update `writing.html` and home preview** to link to `posts/<slug>.html` instead of `post.html?slug=<slug>`.
+6. **Retire `post.html`** and the client-side marked.js fetch — keep marked.js only if needed for the dev editor preview.
+
+Requires a Python markdown library (`pip install markdown` or `mistune`) since we'd be rendering at build time, not runtime. Estimated work: 1–2 hours, all in Python, no framework migration.
+
+Vercel template features that are **not** SEO: Tailwind, Speed Insights, Geist (already have it). Vercel-only / hard without their platform: dynamic OG images (workaround: one static OG image per post made in Figma).

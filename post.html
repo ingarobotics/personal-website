@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Writing — Inga Zhuravleva</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="colors.js"></script>
+</head>
+<body>
+  <div class="hamburger" id="hamburger-menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div class="main-content">
+    <div class="content-block" id="post-body">
+      <p>Loading…</p>
+    </div>
+  </div>
+
+  <nav id="sidebar">
+    <a href="index.html">home</a>
+    <a class="disabled">bookshelf</a>
+    <a href="writing.html" class="active">writing</a>
+  </nav>
+
+  <script src="posts-data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked-footnote/dist/index.umd.min.js"></script>
+  <script>
+    marked.use(markedFootnote());
+
+    function formatDate(iso) {
+      if (!iso) return '';
+      const d = new Date(iso + 'T00:00:00');
+      if (isNaN(d)) return iso;
+      return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    const slug = new URLSearchParams(location.search).get('slug');
+    const post = (window.POSTS || []).find(p => p.slug === slug);
+    const body = document.getElementById('post-body');
+    if (post) {
+      body.innerHTML =
+        `<h2>${post.title}</h2>` +
+        `<p class="post-date-display">${formatDate(post.date)}</p>` +
+        marked.parse(post.markdown);
+      document.title = post.title + ' — Inga Zhuravleva';
+    } else {
+      body.innerHTML = '<p>Post not found.</p>';
+    }
+
+    document.getElementById('hamburger-menu').addEventListener('click', function () {
+      document.getElementById('sidebar').classList.toggle('active');
+    });
+  </script>
+</body>
+</html>
