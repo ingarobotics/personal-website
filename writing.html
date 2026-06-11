@@ -22,9 +22,9 @@
   </div>
 
   <nav id="sidebar">
-    <a href="index.html">home</a>
+    <a href="/">home</a>
     <a class="disabled">bookshelf</a>
-    <a href="writing.html" class="active">writing</a>
+    <a href="/writing" class="active">writing</a>
   </nav>
 
   <script src="posts-data.js"></script>
@@ -32,7 +32,7 @@
     document.getElementById('post-list').innerHTML = (window.POSTS || []).map(p => `
       <li class="post-item">
         <span class="post-date">${p.date}</span>
-        <a href="post.html?slug=${p.slug}">${p.title}</a>
+        <a href="/${p.slug}">${p.title}</a>
       </li>
     `).join('');
 

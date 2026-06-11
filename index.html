@@ -43,9 +43,9 @@
   </div>
 
   <nav id="sidebar">
-    <a href="index.html" class="active">home</a>
+    <a href="/" class="active">home</a>
     <a class="disabled">bookshelf</a>
-    <a href="writing.html">writing</a>
+    <a href="/writing">writing</a>
   </nav>
 
   <script src="posts-data.js"></script>
@@ -53,7 +53,7 @@
     document.getElementById('recent-posts').innerHTML = (window.POSTS || []).slice(0, 3).map(p => `
       <li class="post-item">
         <span class="post-date">${p.date}</span>
-        <a href="post.html?slug=${p.slug}">${p.title}</a>
+        <a href="/${p.slug}">${p.title}</a>
       </li>
     `).join('');
 

@@ -33,6 +33,17 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.send_header('Cache-Control', 'no-store, max-age=0')
         super().end_headers()
 
+    def translate_path(self, path):
+        # Clean-URL fallback: /writing → writing.html, /sequence → sequence.html
+        # Mirrors Vercel's cleanUrls behavior so links work the same locally.
+        full = super().translate_path(path)
+        if (not os.path.exists(full)
+                and not full.endswith('/')
+                and not full.endswith('.html')
+                and os.path.exists(full + '.html')):
+            return full + '.html'
+        return full
+
     def do_POST(self):
         if self.path != '/save':
             self.send_error(404)
